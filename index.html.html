@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un ramo para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night-top:#0b1330;
+    --night-bottom:#1c2b52;
+    --petal-outer-a:#ffb703;
+    --petal-outer-b:#ffcf40;
+    --petal-inner:#fff3b0;
+    --petal-edge:#c97f1f;
+    --stem:#4f7a5b;
+    --leaf:#5c8a63;
+    --ribbon:#7a2e3a;
+    --ribbon-dark:#5a1f2c;
+    --ribbon-light:#a1495a;
+    --card-bg:#fff8e7;
+    --card-text:#2b2110;
+    --card-accent:#c97f1f;
+    --star:#f2e6c9;
+    --lucero:#fff6d8;
+    --text-soft:#dfe3f5;
+    --font-poem:'Cormorant Garamond', Georgia, serif;
+    --font-ui:'Quicksand', system-ui, sans-serif;
+  }
+  :root:not([data-theme="light"]){ color-scheme: dark; }
+  *{ box-sizing:border-box; }
+  html{ scroll-padding-top: env(safe-area-inset-top,0px); }
+  body{
+    margin:0;
+    min-height:100dvh;
+    background: linear-gradient(180deg, var(--night-top) 0%, var(--night-bottom) 100%);
+    color: var(--text-soft);
+    font-family: var(--font-ui);
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+    overflow-x: hidden;
+    position:relative;
+  }
+
+  /* ---------- Cielo ---------- */
+  #sky{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .star{
+    position:absolute;
+    background: var(--star);
+    border-radius:50%;
+    animation: twinkle-in 1.6s ease forwards;
+  }
+  .lucero-mayor{
+    position:absolute;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background: radial-gradient(circle, var(--lucero) 0%, rgba(255,246,216,0.55) 45%, rgba(255,246,216,0) 75%);
+    box-shadow: 0 0 18px 6px rgba(255,246,216,0.55);
+    animation: lucero-pulso 4.5s ease-in-out infinite;
+  }
+  @keyframes twinkle-in{
+    from{ opacity:0; }
+    to{ opacity: var(--star-opacity, .8); }
+  }
+  @keyframes lucero-pulso{
+    0%, 100%{ transform: scale(1); opacity:.85; }
+    50%{ transform: scale(1.35); opacity:1; }
+  }
+
+  /* ---------- Encabezado ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 1rem;
+    text-align:center;
+  }
+  .intro{
+    font-family: var(--font-poem);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height:1.6;
+    color: var(--text-soft);
+    max-width: 36ch;
+    margin: 0 auto 1.4rem;
+    opacity:.9;
+  }
+  h1{
+    font-family: var(--font-poem);
+    font-weight:500;
+    font-size: clamp(2rem, 6vw, 2.9rem);
+    line-height:1.15;
+    margin: 0 0 .9rem;
+    color: #fff9ea;
+  }
+  .hint{
+    font-size: .92rem;
+    letter-spacing:.01em;
+    color: #c9cfe8;
+    margin:0;
+  }
+
+  /* ---------- Ramo ---------- */
+  .garden{
+    position:relative;
+    z-index:1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+  }
+  #bouquetSvg{
+    display:block;
+    width:100%;
+    height:auto;
+    overflow: visible;
+  }
+  .petal{
+    cursor:pointer;
+    transform-origin: 0 0;
+    animation: bloom .7s cubic-bezier(.2,.8,.3,1) forwards;
+    transition: filter .15s ease;
+  }
+  .petal:hover, .petal:focus-visible{
+    filter: brightness(1.12);
+  }
+  .petal:focus-visible{
+    outline: 2px solid #fff6d8;
+    outline-offset: 2px;
+  }
+  .petal.inner{ cursor:default; }
+  .petal.inner:hover{ filter:none; }
+
+  @keyframes bloom{
+    from{ opacity:0; transform: scale(.25); }
+    to{ opacity:1; transform: scale(1); }
+  }
+  .stem-path{
+    fill:none;
+    stroke: var(--stem);
+    stroke-width:4.5;
+    stroke-linecap:round;
+    animation: draw 1s ease forwards;
+  }
+  @keyframes draw{
+    from{ stroke-dashoffset: 700; }
+    to{ stroke-dashoffset:0; }
+  }
+  .leaf{
+    fill: var(--leaf);
+    animation: leaf-in .6s ease forwards;
+  }
+  @keyframes leaf-in{
+    from{ opacity:0; transform: scale(.4); }
+    to{ opacity:1; transform: scale(1); }
+  }
+  .center-dot{
+    fill: var(--petal-edge);
+  }
+  .ribbon-group{
+    animation: ribbon-in .7s ease forwards;
+  }
+  @keyframes ribbon-in{
+    from{ opacity:0; transform: translateY(-8px) scale(.9); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .star, .lucero-mayor, .petal, .stem-path, .leaf, .ribbon-group{
+      animation: none !important;
+    }
+  }
+
+  /* ---------- Modal del poema ---------- */
+  .modal-backdrop{
+    position: fixed;
+    inset:0;
+    background: rgba(8,12,28,0.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 1.5rem;
+    z-index: 10;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .25s ease;
+  }
+  .modal-backdrop.open{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .modal{
+    position:relative;
+    background: var(--card-bg);
+    color: var(--card-text);
+    max-width: 420px;
+    width:100%;
+    border-radius: 14px 14px 30px 14px;
+    padding: 2.4rem 1.9rem 2rem;
+    box-shadow: 0 18px 50px rgba(0,0,0,.45);
+    transform: translateY(14px) scale(.97);
+    transition: transform .25s ease;
+    border-top: 3px solid var(--card-accent);
+  }
+  .modal-backdrop.open .modal{
+    transform: translateY(0) scale(1);
+  }
+  .poem{
+    font-family: var(--font-poem);
+    font-style: italic;
+    font-size: 1.28rem;
+    line-height:1.65;
+    margin:0;
+    white-space: pre-line;
+  }
+  .close-btn{
+    position:absolute;
+    top: .6rem;
+    right: .7rem;
+    width: 34px;
+    height:34px;
+    border-radius:50%;
+    border:none;
+    background: transparent;
+    color: var(--card-text);
+    font-size:1.4rem;
+    line-height:1;
+    cursor:pointer;
+  }
+  .close-btn:hover{ background: rgba(0,0,0,.06); }
+  .close-btn:focus-visible{
+    outline: 2px solid var(--card-accent);
+    outline-offset:2px;
+  }
+
+  footer{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    font-size:.8rem;
+    color: #9aa1c4;
+    padding: 0 1rem 2.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div id="sky" aria-hidden="true"></div>
+
+<header class="hero">
+  <p class="intro">Un ramo pequeño para la que hornea con las manos, lee con calma y emprende con los ojos abiertos.</p>
+  <h1>Para ti, que floreces sin darte cuenta</h1>
+  <p class="hint">Toca un pétalo para leer</p>
+</header>
+
+<main class="garden" aria-label="Ramo de claveles con poemas">
+  <svg id="bouquetSvg" viewBox="0 0 800 660" role="img" aria-hidden="true"></svg>
+</main>
+
+
+<div class="modal-backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="poemText">
+    <button class="close-btn" id="closeBtn" aria-label="Cerrar poema">×</button>
+    <p class="poem" id="poemText"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var poems = [
+    "El azúcar no perdona el apuro:\nenseña que lo dulce pide tiempo.\nQuien bate con calma y sin apuro\nconvierte la harina en contento.",
+    "Lees de noche, casi a escondidas,\ny el libro se vuelve un candil.\nTu lucero no alumbra medidas:\nalumbra lo simple y sutil.",
+    "Nadie abre un negocio sin miedo,\nel miedo también es semilla.\nSe aprende cayendo, no en un momento:\nun sueño propio nunca se humilla.",
+    "El horno guarda su propio lucero:\nla luz pequeña que avisa y no engaña.\nAhí aprendiste que lo bueno y sincero\nnecesita su tiempo, no maña.",
+    "Cada libro es una casa prestada\ndonde te quedas más de lo previsto.\nLeer también enseña a esperar nada\ny encontrarlo todo, sin haberlo visto.",
+    "No hace falta ser grande, ni lejano,\npara ser el lucero de un lugar.\nA veces basta una mano\nque sabe amasar, leer y soñar.",
+    "El primer cliente nunca es el más fácil,\npero enseña más que cien manuales:\nque un sueño chico y tenaz\ncrece con pasos, no con saltos totales.",
+    "Decorar también es escuchar\nlo que el dulce pide en silencio.\nNo se aprende a repostera en un instante:\nse aprende con paciencia y con intento.",
+    "Hay quien busca su lucero afuera,\nsin saber que ya lo lleva dentro.\nTú horneas, lees y esperas\ncon esa luz que no tiene centro.",
+    "Subrayas frases como quien guarda\nmonedas para un día de sequía.\nLeer enseña que nada se aparta\ndel todo, aunque cambie de vía.",
+    "No todo negocio nace grande ni listo,\ncasi todos nacen con dudas y enredos.\nEnseñar a emprender es esto:\nseguir, aunque tiemblen los dedos.",
+    "Entre harina y vainilla se aprende\nque el amor también se mide en gramos.\nTu masa, paciente, comprende\nlo que apenas decimos: te amamos.",
+    "Un buen libro no enseña a leer más rápido,\nenseña a quedarse, a no correr.\nAsí también se aprende, despacito,\na amar sin necesidad de prometer.",
+    "Cuando el camino no tiene mapa,\nel lucero también sirve de guía.\nNo sabías bien por dónde escapa\nel miedo, y aun así seguías.",
+    "Cada receta que sale distinta\nenseña que el error también alimenta.\nLo perfecto casi nunca es lo que pinta:\nlo real es lo que se intenta.",
+    "Lees para entender a los demás\ny sin querer te entiendes tú primero.\nEsa es la lección más grande, quizás:\nque sanar también se aprende, lucero.",
+    "No se enseña a no tener miedo,\nse enseña a caminar con él al lado.\nCada intento, aunque quede enredo,\ndeja un negocio un poco más armado.",
+    "Que esta flor amarilla te recuerde,\npétalo a pétalo, lo que ya sabes:\nque eres lucero cuando algo se pierde,\ny jardín entero cuando algo cabe.",
+    "El merengue no perdona el descuido,\npide manos firmes y paciencia entera.\nAhí aprendiste, sin haberlo pedido,\nque lo suave también tiene su manera.",
+    "Guardas capítulos como quien guarda,\npara más tarde, su propio lucero.\nLeer enseña que nada se aparta\nde lo que un día fue de verdad primero.",
+    "Un pedido perdido también enseña:\nque no todo cliente se queda.\nSe aprende a sostener lo que se sueña\naunque a veces la cuenta no cierre entera.",
+    "No todo lo bueno se anuncia con ruido,\ncasi siempre llega despacio y en silencio.\nComo tú, que has ido, sin querer, construido\nun lugar donde cabe el intento.",
+    "El caramelo enseña una verdad sencilla:\nsi te apuras, se quema; si esperas, brilla.\nComo el lucero que no se atropella,\nlo bueno también sabe su huella.",
+    "Un libro a medias también enseña\nque no hay que terminarlo todo entero.\nA veces basta con lo que deja\npara seguir andando el sendero.",
+    "Nadie factura el primer mes lo que sueña,\ny aun así no se apaga el brillo.\nSer tu propio lucero cuando la cuenta es pequeña\nes parte del oficio, no un imprevisto.",
+    "Aprendiste a repartir tu tiempo\nentre el horno, el libro y el intento.\nNadie enseña bien ese equilibrio:\nse aprende viviéndolo, no en un libro.",
+    "La harina se cae, la receta falla,\ny aun así vuelves a empezar de nuevo.\nEsa es la lección que nadie calla:\nque insistir también es un talento.",
+    "Hay noches en que el libro es lo único\nque no te pide nada a cambio.\nAhí también eres tú lucero único\nalumbrando tu propio descanso.",
+    "No hay manual para el primer «sí»\nde un cliente que aún no te conoce.\nSe aprende a confiar en lo que hay en ti\nantes de que el negocio despegue y roce.",
+    "Entre pétalo y pétalo se aprende\nque no hace falta ser flor perfecta.\nBasta con ser la que sorprende\ncon lo simple, lo honesto, lo que respeta.",
+    "El chocolate templado pide calma,\ncomo quien guarda su lucero adentro.\nNo se apura el fuego que da el alma:\nse espera, se cuida, se atiende con tiento.",
+    "Anotas en los márgenes lo que sientes,\ncomo si el libro también te escuchara.\nLeer enseña a hablar con lo ausente\ny a encontrar compañía en la página clara.",
+    "El negocio crece más despacio\nde lo que uno quisiera al empezar.\nSe aprende que el tiempo no es un espacio\nvacío, sino parte del lugar.",
+    "De tantas flores que puede tener un ramo,\nesta es la que no se marchita:\nla que sigue siendo, aunque el año cambie de tramo,\ntu lucero de siempre, tu costumbre bonita.",
+    "Que este ramo amarillo te recuerde\nen cada pétalo que decidas abrir,\nque lo que siembras nunca se pierde\nsi sabes esperar, hornear y seguir."
+  ];
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = "http://www.w3.org/2000/svg";
+
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs){ e.setAttribute(k, attrs[k]); }
+    return e;
+  }
+
+  /* ---------- Cielo estrellado ---------- */
+  function buildSky(){
+    var sky = document.getElementById('sky');
+    var w = window.innerWidth;
+    var count = w < 480 ? 34 : 55;
+    for (var i = 0; i < count; i++){
+      var s = document.createElement('div');
+      s.className = 'star';
+      var size = (Math.random() * 2 + 1).toFixed(1);
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.top = (Math.random() * 62) + '%';
+      s.style.setProperty('--star-opacity', (Math.random() * .5 + .4).toFixed(2));
+      s.style.animationDelay = (Math.random() * 1.8).toFixed(2) + 's';
+      sky.appendChild(s);
+    }
+    var lucero = document.createElement('div');
+    lucero.className = 'lucero-mayor';
+    lucero.title = 'El lucero';
+    lucero.style.left = '78%';
+    lucero.style.top = '14%';
+    sky.appendChild(lucero);
+  }
+
+  /* ---------- Plantilla de pétalo (apunta hacia -y desde el origen) ---------- */
+  var PETAL_D = "M -12,-2 C -19,-12 -20,-24 -15,-33 L -12,-30 L -14,-38 L -9,-35 L -10,-43 L -5,-40 L -6,-48 L 0,-58 L 6,-48 L 5,-40 L 10,-43 L 9,-35 L 14,-38 L 12,-30 L 15,-33 C 20,-24 19,-12 12,-2 C 6,2 -6,2 -12,-2 Z";
+
+  function buildFlowerHead(svg, cx, cy, rotation, scale, poemIdxs, delay){
+    var g = el('g', { transform: 'translate(' + cx + ',' + cy + ') rotate(' + rotation + ') scale(' + scale + ')' });
+
+    // Anillo interior (decorativo, da volumen de clavel)
+    // Nota: la rotación de cada pétalo vive en un <g> envolvente aparte,
+    // porque un transform CSS (usado por la animación) reemplaza por completo
+    // cualquier atributo transform="rotate(...)" puesto en el mismo elemento.
+    for (var j = 0; j < 6; j++){
+      var angleIn = j * 60 + 30;
+      var wrapIn = el('g', { transform: 'rotate(' + angleIn + ') scale(.6)' });
+      var pIn = el('path', {
+        class: 'petal inner',
+        d: PETAL_D,
+        fill: 'var(--petal-inner)',
+        stroke: 'var(--petal-edge)',
+        'stroke-width': '1.2',
+        'stroke-opacity': '.35'
+      });
+      pIn.style.animationDelay = (delay + 0.12 + j * 0.04) + 's';
+      wrapIn.appendChild(pIn);
+      g.appendChild(wrapIn);
+    }
+
+    // Anillo exterior (interactivo, 5 pétalos con poema)
+    for (var i = 0; i < 5; i++){
+      var jitter = (Math.random() * 8 - 4);
+      var angleOut = i * 72 + jitter;
+      var fillTone = i % 2 === 0 ? 'var(--petal-outer-a)' : 'var(--petal-outer-b)';
+      var wrapOut = el('g', { transform: 'rotate(' + angleOut + ')' });
+      var pOut = el('path', {
+        class: 'petal outer',
+        d: PETAL_D,
+        fill: fillTone,
+        stroke: 'var(--petal-edge)',
+        'stroke-width': '1.4',
+        'stroke-opacity': '.55',
+        tabindex: '0',
+        role: 'button',
+        'aria-label': 'Leer poema',
+        'data-poem': poemIdxs[i]
+      });
+      pOut.style.animationDelay = (delay + 0.28 + i * 0.07) + 's';
+      wrapOut.appendChild(pOut);
+      g.appendChild(wrapOut);
+    }
+
+    // Centro
+    for (var k = 0; k < 5; k++){
+      var da = k * 72;
+      var dot = el('circle', {
+        class: 'center-dot',
+        cx: (7 * Math.cos(da * Math.PI / 180)).toFixed(1),
+        cy: (7 * Math.sin(da * Math.PI / 180)).toFixed(1),
+        r: '3.4'
+      });
+      g.appendChild(dot);
+    }
+    g.appendChild(el('circle', { class: 'center-dot', cx: '0', cy: '0', r: '5' }));
+
+    svg.appendChild(g);
+  }
+
+  function stemPath(svg, gather, target, delay){
+    var bend = (target.x - gather.x) * 0.18;
+    var mx = (gather.x + target.x) / 2 + bend;
+    var my = (gather.y + target.y) / 2 - 10;
+    var d = 'M ' + gather.x + ',' + gather.y + ' Q ' + mx + ',' + my + ' ' + target.x + ',' + target.y;
+    var stem = el('path', { class: 'stem-path', d: d });
+    stem.style.animationDelay = delay + 's';
+    svg.appendChild(stem);
+    return d;
+  }
+
+  function buildLeaf(svg, x, y, rot, delay){
+    var wrap = el('g', { transform: 'translate(' + x + ',' + y + ') rotate(' + rot + ')' });
+    var leaf = el('path', {
+      class: 'leaf',
+      d: 'M 0,0 C 20,-7 33,3 37,16 C 21,18 6,13 0,0 Z'
+    });
+    leaf.style.animationDelay = delay + 's';
+    wrap.appendChild(leaf);
+    svg.appendChild(wrap);
+  }
+
+  function buildRibbon(svg, gx, gy, delay){
+    var g = el('g', { class: 'ribbon-group' });
+    g.style.animationDelay = delay + 's';
+    g.style.transformOrigin = gx + 'px ' + gy + 'px';
+
+    g.appendChild(el('path', {
+      d: 'M ' + (gx - 70) + ',' + (gy - 12) + ' L ' + (gx + 70) + ',' + (gy - 12) + ' L ' + (gx + 80) + ',' + (gy + 22) + ' L ' + (gx - 80) + ',' + (gy + 22) + ' Z',
+      fill: 'var(--ribbon)',
+      stroke: 'var(--ribbon-dark)',
+      'stroke-width': '1.5',
+      transform: 'rotate(-3 ' + gx + ' ' + gy + ')'
+    }));
+
+    g.appendChild(el('path', {
+      d: 'M ' + gx + ',' + (gy - 20) + ' C ' + (gx - 40) + ',' + (gy - 20) + ' ' + (gx - 62) + ',' + (gy - 42) + ' ' + (gx - 52) + ',' + (gy - 60) + ' C ' + (gx - 45) + ',' + (gy - 74) + ' ' + (gx - 16) + ',' + (gy - 72) + ' ' + gx + ',' + (gy - 48) + ' Z',
+      fill: 'var(--ribbon-light)',
+      stroke: 'var(--ribbon-dark)',
+      'stroke-width': '1.5'
+    }));
+    g.appendChild(el('path', {
+      d: 'M ' + gx + ',' + (gy - 20) + ' C ' + (gx + 40) + ',' + (gy - 20) + ' ' + (gx + 62) + ',' + (gy - 42) + ' ' + (gx + 52) + ',' + (gy - 60) + ' C ' + (gx + 45) + ',' + (gy - 74) + ' ' + (gx + 16) + ',' + (gy - 72) + ' ' + gx + ',' + (gy - 48) + ' Z',
+      fill: 'var(--ribbon-light)',
+      stroke: 'var(--ribbon-dark)',
+      'stroke-width': '1.5'
+    }));
+
+    g.appendChild(el('path', {
+      d: 'M ' + (gx - 8) + ',' + (gy - 22) + ' L ' + (gx - 24) + ',' + (gy + 78) + ' L ' + (gx - 8) + ',' + (gy + 62) + ' L ' + gx + ',' + (gy - 6) + ' Z',
+      fill: 'var(--ribbon)',
+      stroke: 'var(--ribbon-dark)',
+      'stroke-width': '1.2'
+    }));
+    g.appendChild(el('path', {
+      d: 'M ' + (gx + 8) + ',' + (gy - 22) + ' L ' + (gx + 24) + ',' + (gy + 78) + ' L ' + (gx + 8) + ',' + (gy + 62) + ' L ' + gx + ',' + (gy - 6) + ' Z',
+      fill: 'var(--ribbon)',
+      stroke: 'var(--ribbon-dark)',
+      'stroke-width': '1.2'
+    }));
+
+    g.appendChild(el('ellipse', {
+      cx: gx, cy: gy - 22, rx: '13', ry: '15',
+      fill: 'var(--ribbon-dark)'
+    }));
+
+    svg.appendChild(g);
+  }
+
+  function buildBouquet(){
+    var svg = document.getElementById('bouquetSvg');
+    var gather = { x: 400, y: 560 };
+    var configs = [
+      { angle: -58, radius: 340 },
+      { angle: -36, radius: 400 },
+      { angle: -16, radius: 440 },
+      { angle:   0, radius: 460 },
+      { angle:  16, radius: 440 },
+      { angle:  36, radius: 400 },
+      { angle:  58, radius: 340 }
+    ];
+
+    var targets = configs.map(function(c){
+      var rad = c.angle * Math.PI / 180;
+      return {
+        x: gather.x + c.radius * Math.sin(rad),
+        y: gather.y - c.radius * Math.cos(rad),
+        angle: c.angle
+      };
+    });
+
+    // Tallos primero (para que queden detrás de las flores)
+    targets.forEach(function(t, i){
+      stemPath(svg, gather, t, reduceMotion ? 0 : i * 0.12);
+    });
+
+    // Un par de hojas entre los tallos
+    buildLeaf(svg, gather.x - 46, gather.y - 130, -35, reduceMotion ? 0 : 0.5);
+    buildLeaf(svg, gather.x + 40, gather.y - 90, 30, reduceMotion ? 0 : 0.65);
+    buildLeaf(svg, gather.x - 10, gather.y - 190, -8, reduceMotion ? 0 : 0.8);
+
+    // Flores: se dibujan de afuera hacia adentro para que la central quede al frente
+    var order = [0, 6, 1, 5, 2, 4, 3];
+    order.forEach(function(i){
+      var t = targets[i];
+      var poemIdxs = poems.slice(i * 5, i * 5 + 5).map(function(_, k){ return i * 5 + k; });
+      var scale = 1 - Math.abs(t.angle) / 58 * 0.16;
+      var rotation = t.angle * 0.4;
+      buildFlowerHead(svg, t.x, t.y, rotation, scale, poemIdxs, reduceMotion ? 0 : 0.5 + i * 0.15);
+    });
+
+    buildRibbon(svg, gather.x, gather.y, reduceMotion ? 0 : 1.9);
+  }
+
+  /* ---------- Modal ---------- */
+  var backdrop = document.getElementById('backdrop');
+  var poemText = document.getElementById('poemText');
+  var closeBtn = document.getElementById('closeBtn');
+  var lastTrigger = null;
+
+  function openPoem(idx, trigger){
+    lastTrigger = trigger || null;
+    poemText.textContent = poems[idx];
+    backdrop.classList.add('open');
+    closeBtn.focus();
+  }
+  function closePoem(){
+    backdrop.classList.remove('open');
+    if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
+  }
+
+  var bouquetSvg = document.getElementById('bouquetSvg');
+  bouquetSvg.addEventListener('click', function(e){
+    var target = e.target.closest('[data-poem]');
+    if (!target) return;
+    openPoem(parseInt(target.getAttribute('data-poem'), 10), target);
+  });
+  bouquetSvg.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var target = e.target.closest('[data-poem]');
+    if (!target) return;
+    e.preventDefault();
+    openPoem(parseInt(target.getAttribute('data-poem'), 10), target);
+  });
+  closeBtn.addEventListener('click', closePoem);
+  backdrop.addEventListener('click', function(e){
+    if (e.target === backdrop) closePoem();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && backdrop.classList.contains('open')) closePoem();
+  });
+
+  buildSky();
+  buildBouquet();
+})();
+</script>
+</body>
+</html>
