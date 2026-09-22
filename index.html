@@ -1,575 +1,640 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Un ramo para ti</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --night-top:#0b1330;
-    --night-bottom:#1c2b52;
-    --petal-outer-a:#ffb703;
-    --petal-outer-b:#ffcf40;
-    --petal-inner:#fff3b0;
-    --petal-edge:#c97f1f;
-    --stem:#4f7a5b;
-    --leaf:#5c8a63;
-    --ribbon:#7a2e3a;
-    --ribbon-dark:#5a1f2c;
-    --ribbon-light:#a1495a;
-    --card-bg:#fff8e7;
-    --card-text:#2b2110;
-    --card-accent:#c97f1f;
-    --star:#f2e6c9;
-    --lucero:#fff6d8;
-    --text-soft:#dfe3f5;
-    --font-poem:'Cormorant Garamond', Georgia, serif;
-    --font-ui:'Quicksand', system-ui, sans-serif;
-  }
-  :root:not([data-theme="light"]){ color-scheme: dark; }
-  *{ box-sizing:border-box; }
-  html{ scroll-padding-top: env(safe-area-inset-top,0px); }
-  body{
-    margin:0;
-    min-height:100dvh;
-    background: linear-gradient(180deg, var(--night-top) 0%, var(--night-bottom) 100%);
-    color: var(--text-soft);
-    font-family: var(--font-ui);
-    padding-top: env(safe-area-inset-top,0px);
-    padding-bottom: env(safe-area-inset-bottom,0px);
-    overflow-x: hidden;
-    position:relative;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jardín Poético para Lucero 🌻📖🧁</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  /* ---------- Cielo ---------- */
-  #sky{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    overflow:hidden;
-  }
-  .star{
-    position:absolute;
-    background: var(--star);
-    border-radius:50%;
-    animation: twinkle-in 1.6s ease forwards;
-  }
-  .lucero-mayor{
-    position:absolute;
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background: radial-gradient(circle, var(--lucero) 0%, rgba(255,246,216,0.55) 45%, rgba(255,246,216,0) 75%);
-    box-shadow: 0 0 18px 6px rgba(255,246,216,0.55);
-    animation: lucero-pulso 4.5s ease-in-out infinite;
-  }
-  @keyframes twinkle-in{
-    from{ opacity:0; }
-    to{ opacity: var(--star-opacity, .8); }
-  }
-  @keyframes lucero-pulso{
-    0%, 100%{ transform: scale(1); opacity:.85; }
-    50%{ transform: scale(1.35); opacity:1; }
-  }
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  /* ---------- Encabezado ---------- */
-  .hero{
-    position:relative;
-    z-index:1;
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem 1rem;
-    text-align:center;
-  }
-  .intro{
-    font-family: var(--font-poem);
-    font-style: italic;
-    font-size: 1.05rem;
-    line-height:1.6;
-    color: var(--text-soft);
-    max-width: 36ch;
-    margin: 0 auto 1.4rem;
-    opacity:.9;
-  }
-  h1{
-    font-family: var(--font-poem);
-    font-weight:500;
-    font-size: clamp(2rem, 6vw, 2.9rem);
-    line-height:1.15;
-    margin: 0 0 .9rem;
-    color: #fff9ea;
-  }
-  .hint{
-    font-size: .92rem;
-    letter-spacing:.01em;
-    color: #c9cfe8;
-    margin:0;
-  }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  /* ---------- Ramo ---------- */
-  .garden{
-    position:relative;
-    z-index:1;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 1rem 2.5rem;
-  }
-  #bouquetSvg{
-    display:block;
-    width:100%;
-    height:auto;
-    overflow: visible;
-  }
-  .petal{
-    cursor:pointer;
-    transform-origin: 0 0;
-    animation: bloom .7s cubic-bezier(.2,.8,.3,1) forwards;
-    transition: filter .15s ease;
-  }
-  .petal:hover, .petal:focus-visible{
-    filter: brightness(1.12);
-  }
-  .petal:focus-visible{
-    outline: 2px solid #fff6d8;
-    outline-offset: 2px;
-  }
-  .petal.inner{ cursor:default; }
-  .petal.inner:hover{ filter:none; }
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sunflower: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde047',
+                            300: '#facc15',
+                            400: '#eab308',
+                            500: '#ca8a04',
+                            600: '#a16207',
+                        },
+                        warmbrown: {
+                            800: '#451a03',
+                            900: '#291102',
+                        }
+                    },
+                    fontFamily: {
+                        serifPoem: ['"Playfair Display"', 'serif'],
+                        handwriting: ['"Caveat"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-  @keyframes bloom{
-    from{ opacity:0; transform: scale(.25); }
-    to{ opacity:1; transform: scale(1); }
-  }
-  .stem-path{
-    fill:none;
-    stroke: var(--stem);
-    stroke-width:4.5;
-    stroke-linecap:round;
-    animation: draw 1s ease forwards;
-  }
-  @keyframes draw{
-    from{ stroke-dashoffset: 700; }
-    to{ stroke-dashoffset:0; }
-  }
-  .leaf{
-    fill: var(--leaf);
-    animation: leaf-in .6s ease forwards;
-  }
-  @keyframes leaf-in{
-    from{ opacity:0; transform: scale(.4); }
-    to{ opacity:1; transform: scale(1); }
-  }
-  .center-dot{
-    fill: var(--petal-edge);
-  }
-  .ribbon-group{
-    animation: ribbon-in .7s ease forwards;
-  }
-  @keyframes ribbon-in{
-    from{ opacity:0; transform: translateY(-8px) scale(.9); }
-    to{ opacity:1; transform: translateY(0) scale(1); }
-  }
+    <style>
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f1c12 0%, #0a130c 50%, #172412 100%);
+            color: #f3f4f6;
+            transition: background 0.8s ease;
+        }
 
-  @media (prefers-reduced-motion: reduce){
-    .star, .lucero-mayor, .petal, .stem-path, .leaf, .ribbon-group{
-      animation: none !important;
-    }
-  }
+        .theme-day {
+            background: linear-gradient(135deg, #fefce8 0%, #fef08a 40%, #ecfdf5 100%);
+            color: #1f2937;
+        }
 
-  /* ---------- Modal del poema ---------- */
-  .modal-backdrop{
-    position: fixed;
-    inset:0;
-    background: rgba(8,12,28,0.72);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 1.5rem;
-    z-index: 10;
-    opacity:0;
-    pointer-events:none;
-    transition: opacity .25s ease;
-  }
-  .modal-backdrop.open{
-    opacity:1;
-    pointer-events:auto;
-  }
-  .modal{
-    position:relative;
-    background: var(--card-bg);
-    color: var(--card-text);
-    max-width: 420px;
-    width:100%;
-    border-radius: 14px 14px 30px 14px;
-    padding: 2.4rem 1.9rem 2rem;
-    box-shadow: 0 18px 50px rgba(0,0,0,.45);
-    transform: translateY(14px) scale(.97);
-    transition: transform .25s ease;
-    border-top: 3px solid var(--card-accent);
-  }
-  .modal-backdrop.open .modal{
-    transform: translateY(0) scale(1);
-  }
-  .poem{
-    font-family: var(--font-poem);
-    font-style: italic;
-    font-size: 1.28rem;
-    line-height:1.65;
-    margin:0;
-    white-space: pre-line;
-  }
-  .close-btn{
-    position:absolute;
-    top: .6rem;
-    right: .7rem;
-    width: 34px;
-    height:34px;
-    border-radius:50%;
-    border:none;
-    background: transparent;
-    color: var(--card-text);
-    font-size:1.4rem;
-    line-height:1;
-    cursor:pointer;
-  }
-  .close-btn:hover{ background: rgba(0,0,0,.06); }
-  .close-btn:focus-visible{
-    outline: 2px solid var(--card-accent);
-    outline-offset:2px;
-  }
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(18, 30, 18, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(250, 204, 21, 0.28);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
 
-  footer{
-    position:relative;
-    z-index:1;
-    text-align:center;
-    font-size:.8rem;
-    color: #9aa1c4;
-    padding: 0 1rem 2.5rem;
-  }
-</style>
+        .theme-day .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            box-shadow: 0 20px 40px rgba(234, 179, 8, 0.15);
+        }
+
+        /* Petal Geometry & Interactivity */
+        .petal {
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease, fill 0.35s ease, stroke 0.35s ease;
+            filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.4));
+            transform-origin: 0px 0px;
+        }
+
+        .petal:hover {
+            filter: drop-shadow(0px 0px 18px rgba(250, 204, 21, 0.95)) brightness(1.25);
+            transform: scale(1.12);
+        }
+
+        .petal.discovered {
+            fill: url(#petalGradRead) !important;
+            stroke: #fef08a !important;
+            stroke-width: 1.8px;
+        }
+
+        .petal.active-petal {
+            fill: #ffffff !important;
+            filter: drop-shadow(0px 0px 25px rgba(255, 255, 255, 1)) brightness(1.4);
+            transform: scale(1.18);
+            stroke: #facc15;
+            stroke-width: 2.5px;
+        }
+
+        /* Swaying Flower Animation */
+        @keyframes swayLeft {
+            0%, 100% { transform: rotate(-2.5deg); }
+            50% { transform: rotate(2.5deg); }
+        }
+
+        @keyframes swayRight {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        .sway-1 {
+            animation: swayLeft 6.5s ease-in-out infinite;
+            transform-origin: 240px 550px;
+        }
+
+        .sway-2 {
+            animation: swayRight 7.5s ease-in-out infinite 0.5s;
+            transform-origin: 400px 550px;
+        }
+
+        .sway-3 {
+            animation: swayLeft 6s ease-in-out infinite 1s;
+            transform-origin: 560px 550px;
+        }
+
+        /* Particle Dust Elements */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatParticle 9s infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.3); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.1); opacity: 0; }
+        }
+
+        /* Modal Blur Backing */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body>
+<body class="theme-night relative flex flex-col justify-between min-h-screen selection:bg-yellow-400 selection:text-gray-900 transition-colors duration-700">
 
-<div id="sky" aria-hidden="true"></div>
+    <!-- Floating Particles Container (Flour dust, sparkles & sweet hearts) -->
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
 
-<header class="hero">
-  <p class="intro">Un ramo pequeño para la que hornea con las manos, lee con calma y emprende con los ojos abiertos.</p>
-  <h1>Para ti, que floreces sin darte cuenta</h1>
-  <p class="hint">Toca un pétalo para leer</p>
-</header>
+    <!-- Header Navigation -->
+    <header class="relative z-20 w-full p-4 md:p-6 flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-yellow-400/20 border border-yellow-400/50 flex items-center justify-center text-yellow-300 shadow-lg shadow-yellow-500/20">
+                <i class="fa-solid fa-sun text-2xl animate-spin-slow"></i>
+            </div>
+            <div>
+                <h1 class="font-handwriting text-3xl md:text-4xl text-yellow-300 font-bold tracking-wide flex items-center gap-2">
+                    Jardín para Lucero <span class="text-xl">✨🧁📖</span>
+                </h1>
+                <p id="subHeader" class="text-xs md:text-sm text-yellow-100/70">Harina, páginas y flores amarillas hechas poesía</p>
+            </div>
+        </div>
 
-<main class="garden" aria-label="Ramo de claveles con poemas">
-  <svg id="bouquetSvg" viewBox="0 0 800 660" role="img" aria-hidden="true"></svg>
-</main>
+        <!-- Action Bar & Controls -->
+        <div class="flex items-center gap-2.5 flex-wrap">
+            <button onclick="toggleTheme()" class="glass-card hover:bg-yellow-400/20 text-yellow-300 px-3.5 py-2 rounded-full text-xs md:text-sm font-medium transition flex items-center gap-2">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
+                <span id="themeText">Modo Noche</span>
+            </button>
 
+            <button id="musicBtn" onclick="toggleAudio()" class="glass-card hover:bg-yellow-400/20 text-yellow-300 px-3.5 py-2 rounded-full text-xs md:text-sm font-medium transition flex items-center gap-2">
+                <i id="musicIcon" class="fa-solid fa-music"></i>
+                <span id="musicText">Melodía</span>
+            </button>
 
-<div class="modal-backdrop" id="backdrop">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="poemText">
-    <button class="close-btn" id="closeBtn" aria-label="Cerrar poema">×</button>
-    <p class="poem" id="poemText"></p>
-  </div>
-</div>
+            <button onclick="openRandomPoem()" class="bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-gray-950 font-bold px-4 py-2 rounded-full text-xs md:text-sm transition shadow-lg shadow-yellow-500/20 flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Verso Aleatorio</span>
+            </button>
+        </div>
+    </header>
 
-<script>
-(function(){
-  "use strict";
+    <!-- Main Scene Area -->
+    <main class="relative z-10 container mx-auto px-4 py-2 flex-1 flex flex-col justify-center items-center min-h-[72vh]">
+        
+        <!-- Interactive Chapter Progress -->
+        <div class="w-full max-w-md mb-2 bg-black/30 rounded-full h-3.5 border border-yellow-500/30 overflow-hidden p-0.5 shadow-inner">
+            <div id="progressBar" class="bg-gradient-to-r from-yellow-500 via-amber-300 to-yellow-200 h-full rounded-full transition-all duration-500 w-0"></div>
+        </div>
+        <p id="progressLabel" class="text-xs md:text-sm text-yellow-200/90 mb-4 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-book-bookmark text-yellow-400"></i> Capítulos deshojados: 0 / 25
+        </p>
 
-  var poems = [
-    "El azúcar no perdona el apuro:\nenseña que lo dulce pide tiempo.\nQuien bate con calma y sin apuro\nconvierte la harina en contento.",
-    "Lees de noche, casi a escondidas,\ny el libro se vuelve un candil.\nTu lucero no alumbra medidas:\nalumbra lo simple y sutil.",
-    "Nadie abre un negocio sin miedo,\nel miedo también es semilla.\nSe aprende cayendo, no en un momento:\nun sueño propio nunca se humilla.",
-    "El horno guarda su propio lucero:\nla luz pequeña que avisa y no engaña.\nAhí aprendiste que lo bueno y sincero\nnecesita su tiempo, no maña.",
-    "Cada libro es una casa prestada\ndonde te quedas más de lo previsto.\nLeer también enseña a esperar nada\ny encontrarlo todo, sin haberlo visto.",
-    "No hace falta ser grande, ni lejano,\npara ser el lucero de un lugar.\nA veces basta una mano\nque sabe amasar, leer y soñar.",
-    "El primer cliente nunca es el más fácil,\npero enseña más que cien manuales:\nque un sueño chico y tenaz\ncrece con pasos, no con saltos totales.",
-    "Decorar también es escuchar\nlo que el dulce pide en silencio.\nNo se aprende a repostera en un instante:\nse aprende con paciencia y con intento.",
-    "Hay quien busca su lucero afuera,\nsin saber que ya lo lleva dentro.\nTú horneas, lees y esperas\ncon esa luz que no tiene centro.",
-    "Subrayas frases como quien guarda\nmonedas para un día de sequía.\nLeer enseña que nada se aparta\ndel todo, aunque cambie de vía.",
-    "No todo negocio nace grande ni listo,\ncasi todos nacen con dudas y enredos.\nEnseñar a emprender es esto:\nseguir, aunque tiemblen los dedos.",
-    "Entre harina y vainilla se aprende\nque el amor también se mide en gramos.\nTu masa, paciente, comprende\nlo que apenas decimos: te amamos.",
-    "Un buen libro no enseña a leer más rápido,\nenseña a quedarse, a no correr.\nAsí también se aprende, despacito,\na amar sin necesidad de prometer.",
-    "Cuando el camino no tiene mapa,\nel lucero también sirve de guía.\nNo sabías bien por dónde escapa\nel miedo, y aun así seguías.",
-    "Cada receta que sale distinta\nenseña que el error también alimenta.\nLo perfecto casi nunca es lo que pinta:\nlo real es lo que se intenta.",
-    "Lees para entender a los demás\ny sin querer te entiendes tú primero.\nEsa es la lección más grande, quizás:\nque sanar también se aprende, lucero.",
-    "No se enseña a no tener miedo,\nse enseña a caminar con él al lado.\nCada intento, aunque quede enredo,\ndeja un negocio un poco más armado.",
-    "Que esta flor amarilla te recuerde,\npétalo a pétalo, lo que ya sabes:\nque eres lucero cuando algo se pierde,\ny jardín entero cuando algo cabe.",
-    "El merengue no perdona el descuido,\npide manos firmes y paciencia entera.\nAhí aprendiste, sin haberlo pedido,\nque lo suave también tiene su manera.",
-    "Guardas capítulos como quien guarda,\npara más tarde, su propio lucero.\nLeer enseña que nada se aparta\nde lo que un día fue de verdad primero.",
-    "Un pedido perdido también enseña:\nque no todo cliente se queda.\nSe aprende a sostener lo que se sueña\naunque a veces la cuenta no cierre entera.",
-    "No todo lo bueno se anuncia con ruido,\ncasi siempre llega despacio y en silencio.\nComo tú, que has ido, sin querer, construido\nun lugar donde cabe el intento.",
-    "El caramelo enseña una verdad sencilla:\nsi te apuras, se quema; si esperas, brilla.\nComo el lucero que no se atropella,\nlo bueno también sabe su huella.",
-    "Un libro a medias también enseña\nque no hay que terminarlo todo entero.\nA veces basta con lo que deja\npara seguir andando el sendero.",
-    "Nadie factura el primer mes lo que sueña,\ny aun así no se apaga el brillo.\nSer tu propio lucero cuando la cuenta es pequeña\nes parte del oficio, no un imprevisto.",
-    "Aprendiste a repartir tu tiempo\nentre el horno, el libro y el intento.\nNadie enseña bien ese equilibrio:\nse aprende viviéndolo, no en un libro.",
-    "La harina se cae, la receta falla,\ny aun así vuelves a empezar de nuevo.\nEsa es la lección que nadie calla:\nque insistir también es un talento.",
-    "Hay noches en que el libro es lo único\nque no te pide nada a cambio.\nAhí también eres tú lucero único\nalumbrando tu propio descanso.",
-    "No hay manual para el primer «sí»\nde un cliente que aún no te conoce.\nSe aprende a confiar en lo que hay en ti\nantes de que el negocio despegue y roce.",
-    "Entre pétalo y pétalo se aprende\nque no hace falta ser flor perfecta.\nBasta con ser la que sorprende\ncon lo simple, lo honesto, lo que respeta.",
-    "El chocolate templado pide calma,\ncomo quien guarda su lucero adentro.\nNo se apura el fuego que da el alma:\nse espera, se cuida, se atiende con tiento.",
-    "Anotas en los márgenes lo que sientes,\ncomo si el libro también te escuchara.\nLeer enseña a hablar con lo ausente\ny a encontrar compañía en la página clara.",
-    "El negocio crece más despacio\nde lo que uno quisiera al empezar.\nSe aprende que el tiempo no es un espacio\nvacío, sino parte del lugar.",
-    "De tantas flores que puede tener un ramo,\nesta es la que no se marchita:\nla que sigue siendo, aunque el año cambie de tramo,\ntu lucero de siempre, tu costumbre bonita.",
-    "Que este ramo amarillo te recuerde\nen cada pétalo que decidas abrir,\nque lo que siembras nunca se pierde\nsi sabes esperar, hornear y seguir."
-  ];
+        <!-- Dynamic SVG Flower Garden Scene -->
+        <div class="w-full max-w-4xl flex justify-center items-center relative">
+            <svg id="gardenSVG" class="w-full h-[480px] md:h-[550px] overflow-visible" viewBox="0 0 800 600">
+                <defs>
+                    <!-- Petal Standard Gradient -->
+                    <radialGradient id="petalGradMain" cx="50%" cy="100%" r="100%">
+                        <stop offset="0%" stop-color="#fef08a" />
+                        <stop offset="45%" stop-color="#facc15" />
+                        <stop offset="100%" stop-color="#d97706" />
+                    </radialGradient>
 
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var NS = "http://www.w3.org/2000/svg";
+                    <!-- Read Petal Gradient -->
+                    <radialGradient id="petalGradRead" cx="50%" cy="100%" r="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="40%" stop-color="#fef08a" />
+                        <stop offset="100%" stop-color="#ca8a04" />
+                    </radialGradient>
 
-  function el(tag, attrs){
-    var e = document.createElementNS(NS, tag);
-    for (var k in attrs){ e.setAttribute(k, attrs[k]); }
-    return e;
-  }
+                    <!-- Pistil Center Core Gradient -->
+                    <radialGradient id="centerGrad" cx="35%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#78350f" />
+                        <stop offset="60%" stop-color="#451a03" />
+                        <stop offset="100%" stop-color="#1c1917" />
+                    </radialGradient>
+                </defs>
 
-  /* ---------- Cielo estrellado ---------- */
-  function buildSky(){
-    var sky = document.getElementById('sky');
-    var w = window.innerWidth;
-    var count = w < 480 ? 34 : 55;
-    for (var i = 0; i < count; i++){
-      var s = document.createElement('div');
-      s.className = 'star';
-      var size = (Math.random() * 2 + 1).toFixed(1);
-      s.style.width = size + 'px';
-      s.style.height = size + 'px';
-      s.style.left = (Math.random() * 100) + '%';
-      s.style.top = (Math.random() * 62) + '%';
-      s.style.setProperty('--star-opacity', (Math.random() * .5 + .4).toFixed(2));
-      s.style.animationDelay = (Math.random() * 1.8).toFixed(2) + 's';
-      sky.appendChild(s);
-    }
-    var lucero = document.createElement('div');
-    lucero.className = 'lucero-mayor';
-    lucero.title = 'El lucero';
-    lucero.style.left = '78%';
-    lucero.style.top = '14%';
-    sky.appendChild(lucero);
-  }
+                <!-- Garden Stems and Leaves -->
+                <g id="stems">
+                    <!-- Left Stem (Daisy - Repostera) -->
+                    <path d="M 240 600 C 230 480 220 400 240 320" fill="none" stroke="#22c55e" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M 235 430 Q 170 410 160 430 Q 210 460 235 430" fill="#16a34a"/>
 
-  /* ---------- Plantilla de pétalo (apunta hacia -y desde el origen) ---------- */
-  var PETAL_D = "M -12,-2 C -19,-12 -20,-24 -15,-33 L -12,-30 L -14,-38 L -9,-35 L -10,-43 L -5,-40 L -6,-48 L 0,-58 L 6,-48 L 5,-40 L 10,-43 L 9,-35 L 14,-38 L 12,-30 L 15,-33 C 20,-24 19,-12 12,-2 C 6,2 -6,2 -12,-2 Z";
+                    <!-- Center Stem (Sunflower - Lucero Brillante) -->
+                    <path d="M 400 600 C 400 460 395 360 400 230" fill="none" stroke="#16a34a" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M 400 410 Q 470 380 490 400 Q 440 440 400 410" fill="#15803d"/>
+                    <path d="M 398 330 Q 320 300 300 320 Q 360 350 398 330" fill="#16a34a"/>
 
-  function buildFlowerHead(svg, cx, cy, rotation, scale, poemIdxs, delay){
-    var g = el('g', { transform: 'translate(' + cx + ',' + cy + ') rotate(' + rotation + ') scale(' + scale + ')' });
+                    <!-- Right Stem (Cosmos - Lectora & Emprendedora) -->
+                    <path d="M 560 600 C 570 480 580 410 560 310" fill="none" stroke="#15803d" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M 565 420 Q 630 390 640 410 Q 590 450 565 420" fill="#22c55e"/>
+                </g>
 
-    // Anillo interior (decorativo, da volumen de clavel)
-    // Nota: la rotación de cada pétalo vive en un <g> envolvente aparte,
-    // porque un transform CSS (usado por la animación) reemplaza por completo
-    // cualquier atributo transform="rotate(...)" puesto en el mismo elemento.
-    for (var j = 0; j < 6; j++){
-      var angleIn = j * 60 + 30;
-      var wrapIn = el('g', { transform: 'rotate(' + angleIn + ') scale(.6)' });
-      var pIn = el('path', {
-        class: 'petal inner',
-        d: PETAL_D,
-        fill: 'var(--petal-inner)',
-        stroke: 'var(--petal-edge)',
-        'stroke-width': '1.2',
-        'stroke-opacity': '.35'
-      });
-      pIn.style.animationDelay = (delay + 0.12 + j * 0.04) + 's';
-      wrapIn.appendChild(pIn);
-      g.appendChild(wrapIn);
-    }
+                <!-- FLOWER 1 (LEFT - Margarita Repostera - 8 Petals) -->
+                <g id="flower-left" class="sway-1">
+                    <g id="petals-left"></g>
+                    <!-- Center Core -->
+                    <circle cx="240" cy="320" r="30" fill="url(#centerGrad)" stroke="#ca8a04" stroke-width="3" />
+                    <circle cx="240" cy="320" r="23" fill="none" stroke="#eab308" stroke-dasharray="3,3" />
+                    <text x="240" y="324" text-anchor="middle" fill="#fde047" font-size="11" font-weight="bold">🧁 Repostería</text>
+                </g>
 
-    // Anillo exterior (interactivo, 5 pétalos con poema)
-    for (var i = 0; i < 5; i++){
-      var jitter = (Math.random() * 8 - 4);
-      var angleOut = i * 72 + jitter;
-      var fillTone = i % 2 === 0 ? 'var(--petal-outer-a)' : 'var(--petal-outer-b)';
-      var wrapOut = el('g', { transform: 'rotate(' + angleOut + ')' });
-      var pOut = el('path', {
-        class: 'petal outer',
-        d: PETAL_D,
-        fill: fillTone,
-        stroke: 'var(--petal-edge)',
-        'stroke-width': '1.4',
-        'stroke-opacity': '.55',
-        tabindex: '0',
-        role: 'button',
-        'aria-label': 'Leer poema',
-        'data-poem': poemIdxs[i]
-      });
-      pOut.style.animationDelay = (delay + 0.28 + i * 0.07) + 's';
-      wrapOut.appendChild(pOut);
-      g.appendChild(wrapOut);
-    }
+                <!-- FLOWER 2 (CENTER - Girasol de Lucero - 10 Petals) -->
+                <g id="flower-center" class="sway-2">
+                    <g id="petals-center"></g>
+                    <!-- Center Core Sunflower -->
+                    <circle cx="400" cy="230" r="42" fill="url(#centerGrad)" stroke="#f59e0b" stroke-width="4" />
+                    <circle cx="400" cy="230" r="34" fill="none" stroke="#ca8a04" stroke-dasharray="4,4" />
+                    <text x="400" y="235" text-anchor="middle" fill="#fde047" font-size="13" font-weight="bold">✨ Lucero Sol</text>
+                </g>
 
-    // Centro
-    for (var k = 0; k < 5; k++){
-      var da = k * 72;
-      var dot = el('circle', {
-        class: 'center-dot',
-        cx: (7 * Math.cos(da * Math.PI / 180)).toFixed(1),
-        cy: (7 * Math.sin(da * Math.PI / 180)).toFixed(1),
-        r: '3.4'
-      });
-      g.appendChild(dot);
-    }
-    g.appendChild(el('circle', { class: 'center-dot', cx: '0', cy: '0', r: '5' }));
+                <!-- FLOWER 3 (RIGHT - Cosmos Lectora - 7 Petals) -->
+                <g id="flower-right" class="sway-3">
+                    <g id="petals-right"></g>
+                    <!-- Center Core -->
+                    <circle cx="560" cy="310" r="30" fill="url(#centerGrad)" stroke="#eab308" stroke-width="3" />
+                    <circle cx="560" cy="310" r="24" fill="none" stroke="#fef08a" stroke-dasharray="4,2" />
+                    <text x="560" y="315" text-anchor="middle" fill="#fde047" font-size="11" font-weight="bold">📖 Lectora</text>
+                </g>
+            </svg>
+        </div>
+    </main>
 
-    svg.appendChild(g);
-  }
+    <!-- POEM MODAL READER -->
+    <div id="poemModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modalCard" class="glass-card w-full max-w-xl rounded-3xl p-6 md:p-8 relative transform scale-90 transition-transform duration-300 border-yellow-400/40">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-yellow-400/20 hover:bg-yellow-400/40 text-yellow-300 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
 
-  function stemPath(svg, gather, target, delay){
-    var bend = (target.x - gather.x) * 0.18;
-    var mx = (gather.x + target.x) / 2 + bend;
-    var my = (gather.y + target.y) / 2 - 10;
-    var d = 'M ' + gather.x + ',' + gather.y + ' Q ' + mx + ',' + my + ' ' + target.x + ',' + target.y;
-    var stem = el('path', { class: 'stem-path', d: d });
-    stem.style.animationDelay = delay + 's';
-    svg.appendChild(stem);
-    return d;
-  }
+            <!-- Metadata Badges -->
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+                <span id="modalPetalBadge" class="bg-yellow-400/20 text-yellow-300 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-400/30 flex items-center gap-1.5">
+                    <i class="fa-solid fa-spa"></i> Pétalo #1
+                </span>
+                <span id="modalTagBadge" class="bg-amber-500/20 text-amber-200 text-xs font-semibold px-3 py-1 rounded-full border border-amber-400/30 flex items-center gap-1.5">
+                    <i class="fa-solid fa-cookie-bite"></i> Receta de Amor
+                </span>
+            </div>
 
-  function buildLeaf(svg, x, y, rot, delay){
-    var wrap = el('g', { transform: 'translate(' + x + ',' + y + ') rotate(' + rot + ')' });
-    var leaf = el('path', {
-      class: 'leaf',
-      d: 'M 0,0 C 20,-7 33,3 37,16 C 21,18 6,13 0,0 Z'
-    });
-    leaf.style.animationDelay = delay + 's';
-    wrap.appendChild(leaf);
-    svg.appendChild(wrap);
-  }
+            <!-- Poem Title -->
+            <h2 id="modalPoemTitle" class="text-2xl md:text-3xl font-bold text-yellow-300 mb-4 font-serifPoem tracking-wide">
+                Título del Poema
+            </h2>
 
-  function buildRibbon(svg, gx, gy, delay){
-    var g = el('g', { class: 'ribbon-group' });
-    g.style.animationDelay = delay + 's';
-    g.style.transformOrigin = gx + 'px ' + gy + 'px';
+            <!-- Poem Text Body -->
+            <div class="bg-black/30 rounded-2xl p-5 md:p-7 mb-6 border border-yellow-400/15 shadow-inner">
+                <p id="modalPoemBody" class="text-lg md:text-2xl text-yellow-100 font-serifPoem leading-relaxed italic text-center">
+                    "Aquí se desplegará el poema..."
+                </p>
+            </div>
 
-    g.appendChild(el('path', {
-      d: 'M ' + (gx - 70) + ',' + (gy - 12) + ' L ' + (gx + 70) + ',' + (gy - 12) + ' L ' + (gx + 80) + ',' + (gy + 22) + ' L ' + (gx - 80) + ',' + (gy + 22) + ' Z',
-      fill: 'var(--ribbon)',
-      stroke: 'var(--ribbon-dark)',
-      'stroke-width': '1.5',
-      transform: 'rotate(-3 ' + gx + ' ' + gy + ')'
-    }));
+            <!-- Modal Bottom Controls -->
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+                <button onclick="copyCurrentPoem()" class="px-4 py-2 rounded-full glass-card hover:bg-yellow-400/20 text-yellow-200 text-xs md:text-sm font-medium transition flex items-center gap-2">
+                    <i class="fa-regular fa-copy"></i> Copiar Verso
+                </button>
 
-    g.appendChild(el('path', {
-      d: 'M ' + gx + ',' + (gy - 20) + ' C ' + (gx - 40) + ',' + (gy - 20) + ' ' + (gx - 62) + ',' + (gy - 42) + ' ' + (gx - 52) + ',' + (gy - 60) + ' C ' + (gx - 45) + ',' + (gy - 74) + ' ' + (gx - 16) + ',' + (gy - 72) + ' ' + gx + ',' + (gy - 48) + ' Z',
-      fill: 'var(--ribbon-light)',
-      stroke: 'var(--ribbon-dark)',
-      'stroke-width': '1.5'
-    }));
-    g.appendChild(el('path', {
-      d: 'M ' + gx + ',' + (gy - 20) + ' C ' + (gx + 40) + ',' + (gy - 20) + ' ' + (gx + 62) + ',' + (gy - 42) + ' ' + (gx + 52) + ',' + (gy - 60) + ' C ' + (gx + 45) + ',' + (gy - 74) + ' ' + (gx + 16) + ',' + (gy - 72) + ' ' + gx + ',' + (gy - 48) + ' Z',
-      fill: 'var(--ribbon-light)',
-      stroke: 'var(--ribbon-dark)',
-      'stroke-width': '1.5'
-    }));
+                <div class="flex items-center gap-2">
+                    <button onclick="navigatePoem(-1)" class="w-10 h-10 rounded-full glass-card hover:bg-yellow-400/20 text-yellow-300 flex items-center justify-center transition">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button onclick="navigatePoem(1)" class="w-10 h-10 rounded-full bg-yellow-400 hover:bg-yellow-300 text-gray-950 font-bold flex items-center justify-center transition shadow-lg shadow-yellow-500/20">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    g.appendChild(el('path', {
-      d: 'M ' + (gx - 8) + ',' + (gy - 22) + ' L ' + (gx - 24) + ',' + (gy + 78) + ' L ' + (gx - 8) + ',' + (gy + 62) + ' L ' + gx + ',' + (gy - 6) + ' Z',
-      fill: 'var(--ribbon)',
-      stroke: 'var(--ribbon-dark)',
-      'stroke-width': '1.2'
-    }));
-    g.appendChild(el('path', {
-      d: 'M ' + (gx + 8) + ',' + (gy - 22) + ' L ' + (gx + 24) + ',' + (gy + 78) + ' L ' + (gx + 8) + ',' + (gy + 62) + ' L ' + gx + ',' + (gy - 6) + ' Z',
-      fill: 'var(--ribbon)',
-      stroke: 'var(--ribbon-dark)',
-      'stroke-width': '1.2'
-    }));
+    <!-- Celebration Modal (When all 25 petals are read) -->
+    <div id="completionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-8 text-center border-yellow-400/50 shadow-2xl">
+            <div class="w-20 h-20 mx-auto rounded-full bg-yellow-400/20 border border-yellow-400/50 flex items-center justify-center text-yellow-300 text-4xl mb-4 shadow-lg shadow-yellow-500/30">
+                🌻
+            </div>
+            <h2 class="text-3xl font-bold font-serifPoem text-yellow-300 mb-2">¡Ramo Completo para Lucero!</h2>
+            <p class="text-yellow-100/90 text-base mb-6 leading-relaxed">
+                Has leído cada capítulo, cada receta dulce y cada destello de este jardín. Que el camino de **Lucero** siga floreciendo lleno de libros, proyectos dulces e infinita felicidad.
+            </p>
+            <button onclick="closeCompletionModal()" class="bg-gradient-to-r from-yellow-500 to-amber-500 text-gray-950 font-bold px-6 py-3 rounded-full text-sm transition shadow-lg shadow-yellow-500/30">
+                Volver a Contemplar el Jardín ✨
+            </button>
+        </div>
+    </div>
 
-    g.appendChild(el('ellipse', {
-      cx: gx, cy: gy - 22, rx: '13', ry: '15',
-      fill: 'var(--ribbon-dark)'
-    }));
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-gray-950 font-bold px-5 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 text-sm z-50 flex items-center gap-2">
+        <i class="fa-solid fa-sparkles"></i>
+        <span id="toastMsg">Mensaje</span>
+    </div>
 
-    svg.appendChild(g);
-  }
+    <footer class="relative z-10 text-center py-4 text-xs text-yellow-200/60">
+        <p>Jardín Creado Especialmente para Lucero • Harina, Libros y Flores Amarillas ✨</p>
+    </footer>
 
-  function buildBouquet(){
-    var svg = document.getElementById('bouquetSvg');
-    var gather = { x: 400, y: 560 };
-    var configs = [
-      { angle: -58, radius: 340 },
-      { angle: -36, radius: 400 },
-      { angle: -16, radius: 440 },
-      { angle:   0, radius: 460 },
-      { angle:  16, radius: 440 },
-      { angle:  36, radius: 400 },
-      { angle:  58, radius: 340 }
-    ];
+    <!-- JavaScript Logic -->
+    <script>
+        const POEMS = {
+            center: [
+                { title: "El Lucero de las Mañanas", tag: "✨ Destello Solar", text: "Como un brillante lucero en el amanecer,\ncon harina y dulzura amasas momentos,\ncreando postres que hacen florecer\nlos más puros y hermosos sentimientos." },
+                { title: "Capítulo de Vainilla", tag: "📖 Lectora & Repostera", text: "Entre páginas de libros y aroma a canela,\nLucero escribe historias de gran sazón,\ncada receta es un cuento que consuela\ny cada pastel una obra del corazón." },
+                { title: "La Magia del Horno", tag: "🧁 Arte Dulce", text: "Mezclas harina, sueños y pasión,\ny en el horno la magia se vuelve real,\neres el lucero de esta creación,\núnica, emprendedora y especial." },
+                { title: "Luz de Emprendimiento", tag: "💼 Emprendedora", text: "Con coraje, visión y dulce dedicación,\ntu emprendimiento florece como un girasol,\nLucero inspira a toda la nación\ncon la fuerza radiante del propio sol." },
+                { title: "Un Libro y un Café", tag: "📚 Rincón Poético", text: "Un buen libro abierto en el taller,\nel aroma del horneado en el ambiente,\nLucero sabe perfecto comprender\nque la lectura y el arte van de la mano siempre." },
+                { title: "Receta de Estrellas", tag: "⭐ Brillo de Lucero", text: "Pones pizcas de estrellas en cada receta,\nmordiscos de cielo que hacen soñar,\neres la repostera y la poetisa perfecta\nque todos quisiéramos contemplar." },
+                { title: "El Secreto del Pastel", tag: "🍰 Secreto Dulce", text: "El ingrediente secreto no es el azúcar ni el licor,\nes el toque de Lucero al amasar,\nque transforma la harina con dulce amor\nen sonrisas que no dejan de brillar." },
+                { title: "Historias en la Masa", tag: "📖 Páginas Doradas", text: "Cada pliegue de la masa guarda un verso,\ncada lectura un mundo por descubrir,\nen el corazón del más bello universo\ntu sonrisa nos enseña a sonreír." },
+                { title: "Lucero de Primavera", tag: "🌻 Flor Amarilla", text: "Flores amarillas para la que sueña en grande,\npara la repostera que conquista la vida,\nno hay meta alta que te desmande\ncon tu alma brillante y agradecida." },
+                { title: "El Arte de Crear", tag: "✨ Dulce Creación", text: "Tus manos hornean delicias sin igual,\ntu mente viaja por mil libros de amor,\neres el lucero más bello y celestial\nque ilumina el mundo con su resplandor." }
+            ],
+            left: [
+                { title: "Aroma a Canela y Sueños", tag: "🧁 Delicia Dulce", text: "Un toque de canela y un suspiro de luz,\nLucero hornea la mañana con alegría,\ncada postre lleva la gracia que llevas tú,\nconvertida en la más dulce repostería." },
+                { title: "Lecturas Dulces", tag: "📖 Amor a la Lectura", text: "Página tras página devoras universos,\nmientras en el horno crece una ilusión,\nLucero combina la repostería y los versos\nen una maravillosa y perfecta armonía." },
+                { title: "Harina y Poesía", tag: "✨ Alquimia Repostera", text: "Espolvoreas azúcar como si fuera nieve,\ny de tus libros sacas historias de encanto,\nLucero hace que la vida se sienta suave\ny llena de motivos para el canto." },
+                { title: "El Lucero del Taller", tag: "💼 Emprendimiento", text: "Madrugas con fe, pasión y convicción,\nconstruyendo tu marca paso a paso,\neres Lucero, ejemplo de superación,\nque ilumina el camino en cada trazo." },
+                { title: "Chocolate y Letras", tag: "🍫 Dulzura Poética", text: "Entre matices de chocolate y fantasía,\ntus lecturas te llenan la mente de luz,\nno hay en el mundo mayor poesía\nque la dulzura infinita que transmites tú." },
+                { title: "Margarita de Vainilla", tag: "🌼 Flor de Repostería", text: "Como una margarita que busca la claridad,\ntu proyecto dulce no deja de crecer,\nLucero le regala a la realidad\nel sabor más bello que se pueda tener." },
+                { title: "Capítulo Dulce", tag: "📚 Marca de Libro", text: "Marcas la página donde quedaste ayer,\ny enciendes la batidora con entusiasmo,\nqué dicha tan grande es verte emprender\ny convertir cada día en un entusiasmo." },
+                { title: "Destello de Azúcar", tag: "🧁 Pizca de Magia", text: "Pizca de vainilla, gotas de amor,\nLucero hornea con alma y finura,\ndejando en cada cliente el dulce sabor\nde su talento y su maravillosa dulzura." }
+            ],
+            right: [
+                { title: "Lucero Guiadora", tag: "⭐ Luz Brillante", text: "Como estrella que guía en la oscuridad,\ntu nombre es promesa de luz y calor,\nLucero llena el espacio de amabilidad,\nde buena lectura y hermoso sabor." },
+                { title: "Biblioteca y Pasteles", tag: "📖 Pasión por Leer", text: "Entre estantes de libros y moldes de pastel,\ntu corazón encuentra su refugio ideal,\neres la reina de este mundo miel\ny de una mente brillante y fenomenal." },
+                { title: "Sueños Horneados", tag: "🍰 Emprendimiento", text: "No solo horneas tartas y galletas,\nhorneas sueños de libertad y pasión,\nLucero alcanza todas sus metas\ncon trabajo, talento y corazón." },
+                { title: "Versos de Mantequilla", tag: "✨ Sabor Dorado", text: "Suave como la mantequilla al derretirse,\nbrillante como el sol en la ventana,\ntu espíritu jamás deja de rendirse\ny brilla como lucero cada mañana." },
+                { title: "Flores en la Vitrina", tag: "🌻 Jardín de Lucero", text: "Flores amarillas decoran tu mesa,\nlibros leídos adornan tu estante,\neres para todos la más dulce sorpresa\ny un ser extraordinario y radiante." },
+                { title: "El Secreto de Leer", tag: "📚 Imaginación", text: "Viajas por mundos de magia y misterio\nmientras reposa la masa en el bol,\nLucero le da a la vida el criterio\ny la calidez hermosa del sol." },
+                { title: "Tarta de Flores Amarillas", tag: "🍰 Receta de Primavera", text: "Una tarta hecha de flores y alegría,\ncon el sello inolvidable de tu pasión,\nLucero nos regala día a día\nel dulce abrazo de su corazón." }
+            ]
+        };
 
-    var targets = configs.map(function(c){
-      var rad = c.angle * Math.PI / 180;
-      return {
-        x: gather.x + c.radius * Math.sin(rad),
-        y: gather.y - c.radius * Math.cos(rad),
-        angle: c.angle
-      };
-    });
+        const readPetals = new Set();
+        let currentFlowerKey = 'center';
+        let currentPetalIndex = 0;
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let theme = 'night';
 
-    // Tallos primero (para que queden detrás de las flores)
-    targets.forEach(function(t, i){
-      stemPath(svg, gather, t, reduceMotion ? 0 : i * 0.12);
-    });
+        function renderFlowerPetals(containerId, centerX, centerY, petalCount, length, width, flowerKey) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
 
-    // Un par de hojas entre los tallos
-    buildLeaf(svg, gather.x - 46, gather.y - 130, -35, reduceMotion ? 0 : 0.5);
-    buildLeaf(svg, gather.x + 40, gather.y - 90, 30, reduceMotion ? 0 : 0.65);
-    buildLeaf(svg, gather.x - 10, gather.y - 190, -8, reduceMotion ? 0 : 0.8);
+            for (let i = 0; i < petalCount; i++) {
+                const angle = (360 / petalCount) * i;
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                
+                // Position group at exact flower pistil center
+                g.setAttribute("transform", `translate(${centerX}, ${centerY}) rotate(${angle})`);
 
-    // Flores: se dibujan de afuera hacia adentro para que la central quede al frente
-    var order = [0, 6, 1, 5, 2, 4, 3];
-    order.forEach(function(i){
-      var t = targets[i];
-      var poemIdxs = poems.slice(i * 5, i * 5 + 5).map(function(_, k){ return i * 5 + k; });
-      var scale = 1 - Math.abs(t.angle) / 58 * 0.16;
-      var rotation = t.angle * 0.4;
-      buildFlowerHead(svg, t.x, t.y, rotation, scale, poemIdxs, reduceMotion ? 0 : 0.5 + i * 0.15);
-    });
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                
+                // Draw symmetrical petal shape outwards from origin (0,0)
+                const d = `M 0 0 C -${width/2} -${length*0.3}, -${width} -${length*0.75}, 0 -${length} C ${width} -${length*0.75}, ${width/2} -${length*0.3}, 0 0`;
+                
+                path.setAttribute("d", d);
+                path.setAttribute("class", "petal");
+                path.setAttribute("fill", "url(#petalGradMain)");
+                path.setAttribute("stroke", "#d97706");
+                path.setAttribute("stroke-width", "1");
+                path.setAttribute("data-flower", flowerKey);
+                path.setAttribute("data-index", i);
 
-    buildRibbon(svg, gather.x, gather.y, reduceMotion ? 0 : 1.9);
-  }
+                path.addEventListener("click", () => openPoemModal(flowerKey, i));
+                path.addEventListener("mouseenter", () => playTone(320 + i * 20));
 
-  /* ---------- Modal ---------- */
-  var backdrop = document.getElementById('backdrop');
-  var poemText = document.getElementById('poemText');
-  var closeBtn = document.getElementById('closeBtn');
-  var lastTrigger = null;
+                g.appendChild(path);
+                container.appendChild(g);
+            }
+        }
 
-  function openPoem(idx, trigger){
-    lastTrigger = trigger || null;
-    poemText.textContent = poems[idx];
-    backdrop.classList.add('open');
-    closeBtn.focus();
-  }
-  function closePoem(){
-    backdrop.classList.remove('open');
-    if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
-  }
+        function buildGarden() {
+            // Left Flower (8 Petals)
+            renderFlowerPetals("petals-left", 240, 320, 8, 105, 26, "left");
+            // Center Flower (10 Petals)
+            renderFlowerPetals("petals-center", 400, 230, 10, 125, 30, "center");
+            // Right Flower (7 Petals)
+            renderFlowerPetals("petals-right", 560, 310, 7, 110, 28, "right");
+        }
 
-  var bouquetSvg = document.getElementById('bouquetSvg');
-  bouquetSvg.addEventListener('click', function(e){
-    var target = e.target.closest('[data-poem]');
-    if (!target) return;
-    openPoem(parseInt(target.getAttribute('data-poem'), 10), target);
-  });
-  bouquetSvg.addEventListener('keydown', function(e){
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    var target = e.target.closest('[data-poem]');
-    if (!target) return;
-    e.preventDefault();
-    openPoem(parseInt(target.getAttribute('data-poem'), 10), target);
-  });
-  closeBtn.addEventListener('click', closePoem);
-  backdrop.addEventListener('click', function(e){
-    if (e.target === backdrop) closePoem();
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && backdrop.classList.contains('open')) closePoem();
-  });
+        function openPoemModal(flowerKey, index) {
+            currentFlowerKey = flowerKey;
+            currentPetalIndex = index;
 
-  buildSky();
-  buildBouquet();
-})();
-</script>
+            const poem = POEMS[flowerKey][index];
+
+            document.getElementById("modalPetalBadge").innerHTML = `<i class="fa-solid fa-spa"></i> Pétalo #${index + 1}`;
+            document.getElementById("modalTagBadge").innerHTML = `<i class="fa-solid fa-star text-yellow-300"></i> ${poem.tag}`;
+            document.getElementById("modalPoemTitle").innerText = poem.title;
+            
+            const formatted = poem.text.split('\n').join('<br>');
+            document.getElementById("modalPoemBody").innerHTML = `"${formatted}"`;
+
+            // Record as read
+            const petalId = `${flowerKey}-${index}`;
+            readPetals.add(petalId);
+
+            // Update SVG petal visual status
+            const petalPath = document.querySelector(`.petal[data-flower="${flowerKey}"][data-index="${index}"]`);
+            if (petalPath) {
+                petalPath.classList.add("discovered");
+            }
+
+            updateProgress();
+            playChime();
+
+            // Display Modal
+            const modal = document.getElementById("poemModal");
+            const card = document.getElementById("modalCard");
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-90");
+            card.classList.add("scale-100");
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("poemModal");
+            const card = document.getElementById("modalCard");
+            modal.classList.add("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-100");
+            card.classList.add("scale-90");
+        }
+
+        function navigatePoem(direction) {
+            const list = POEMS[currentFlowerKey];
+            currentPetalIndex = (currentPetalIndex + direction + list.length) % list.length;
+            openPoemModal(currentFlowerKey, currentPetalIndex);
+        }
+
+        function openRandomPoem() {
+            const keys = ["center", "left", "right"];
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            const randomIndex = Math.floor(Math.random() * POEMS[randomKey].length);
+            openPoemModal(randomKey, randomIndex);
+        }
+
+        function updateProgress() {
+            const total = 10 + 8 + 7; // 25 Petals Total
+            const count = readPetals.size;
+            const percentage = (count / total) * 100;
+
+            document.getElementById("progressBar").style.width = `${percentage}%`;
+            document.getElementById("progressLabel").innerHTML = `<i class="fa-solid fa-book-bookmark text-yellow-400"></i> Capítulos deshojados: ${count} / ${total}`;
+
+            if (count === total) {
+                setTimeout(showCompletionModal, 600);
+            }
+        }
+
+        function showCompletionModal() {
+            const modal = document.getElementById("completionModal");
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            playChime();
+        }
+
+        function closeCompletionModal() {
+            const modal = document.getElementById("completionModal");
+            modal.classList.add("opacity-0", "pointer-events-none");
+        }
+
+        function copyCurrentPoem() {
+            const poem = POEMS[currentFlowerKey][currentPetalIndex];
+            const text = `✨ ${poem.title} ✨\n(${poem.tag})\n\n${poem.text}\n\n— Dedicado a Lucero 🌻🧁📖`;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+            showToast("¡Poema copiado para Lucero!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toastMsg").innerText = msg;
+            toast.classList.remove("opacity-0", "pointer-events-none");
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "pointer-events-none");
+            }, 2500);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById("themeIcon");
+            const text = document.getElementById("themeText");
+
+            if (theme === 'night') {
+                theme = 'day';
+                body.className = 'theme-day relative flex flex-col justify-between min-h-screen selection:bg-yellow-400 selection:text-gray-900 transition-colors duration-700';
+                icon.className = 'fa-solid fa-sun';
+                text.innerText = 'Modo Día';
+            } else {
+                theme = 'night';
+                body.className = 'theme-night relative flex flex-col justify-between min-h-screen selection:bg-yellow-400 selection:text-gray-900 transition-colors duration-700';
+                icon.className = 'fa-solid fa-moon';
+                text.innerText = 'Modo Noche';
+            }
+        }
+
+        function createParticles() {
+            const container = document.getElementById("particles-container");
+            const icons = ['✨', '🧁', '📖', '💛', '⭐', '🌸'];
+
+            for (let i = 0; i < 22; i++) {
+                const p = document.createElement("div");
+                p.className = "particle text-yellow-300/60";
+                
+                if (Math.random() > 0.4) {
+                    p.innerText = icons[Math.floor(Math.random() * icons.length)];
+                    p.style.fontSize = `${Math.random() * 12 + 10}px`;
+                } else {
+                    // Golden dust particle
+                    p.style.width = '6px';
+                    p.style.height = '6px';
+                    p.style.backgroundColor = '#fde047';
+                    p.style.borderRadius = '50%';
+                    p.style.boxShadow = '0 0 10px #fde047';
+                }
+
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${Math.random() * 6 + 7}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(p);
+            }
+        }
+
+        function initAudioCtx() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playTone(freq) {
+            try {
+                initAudioCtx();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.04, audioCtx.currentTime + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.28);
+            } catch(e) {}
+        }
+
+        function playChime() {
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+                setTimeout(() => playTone(freq), idx * 75);
+            });
+        }
+
+        function toggleAudio() {
+            initAudioCtx();
+            const musicText = document.getElementById("musicText");
+            const musicIcon = document.getElementById("musicIcon");
+
+            if (isAudioPlaying) {
+                isAudioPlaying = false;
+                musicText.innerText = "Melodía";
+                musicIcon.className = "fa-solid fa-music";
+            } else {
+                isAudioPlaying = true;
+                musicText.innerText = "Sonando...";
+                musicIcon.className = "fa-solid fa-volume-high";
+                playChime();
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            buildGarden();
+            createParticles();
+        });
+    </script>
 </body>
 </html>
